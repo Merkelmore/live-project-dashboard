@@ -1,0 +1,26 @@
+services:
+  app:
+    image: live-project-dashboard:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ${ENV_FILE:-.env.production}
+    expose:
+      - "3000"
+    networks:
+      shared_proxy:
+        aliases:
+          - live-project-dashboard
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/api/status').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))\""]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 30s
+
+networks:
+  shared_proxy:
+    external: true
+    name: cultural-enrichment-radar_default

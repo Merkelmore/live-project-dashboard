@@ -1,0 +1,16 @@
+# Add this site block to the shared Caddyfile in the cultural-enrichment-radar
+# production checkout once the /srv/live-project-dashboard checkout exists.
+www.leonstrotz.com {
+  encode zstd gzip
+
+  header {
+    -Server
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "DENY"
+    Referrer-Policy "strict-origin-when-cross-origin"
+    Permissions-Policy "camera=(), geolocation=(), microphone=()"
+    Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  }
+
+  reverse_proxy live-project-dashboard:3000
+}
