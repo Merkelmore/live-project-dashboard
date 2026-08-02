@@ -2,7 +2,7 @@ import "server-only";
 
 import type { Project } from "@/lib/projects";
 
-export type HealthStatus = "live" | "not_live" | "unknown";
+export type HealthStatus = "live" | "protected" | "not_live" | "unknown";
 
 export type ProjectHealth = {
   id: string;
@@ -23,16 +23,20 @@ type CheckOptions = {
 const DEFAULT_TIMEOUT_MS = 8_000;
 const DEFAULT_CONCURRENCY = 3;
 
-function targetFor(project: Project) {
+function targetFor(project: Project & { url: string }) {
   return project.healthUrl ?? project.url;
 }
 
 function statusForHttpCode(statusCode: number): HealthStatus {
-  return statusCode >= 200 && statusCode < 400 ? "live" : "not_live";
+  if (statusCode >= 200 && statusCode < 400) return "live";
+  // A login wall still proves that the public service is running. This makes
+  // protected projects such as Application Agent visible as reachable.
+  if (statusCode === 401 || statusCode === 403) return "protected";
+  return "not_live";
 }
 
 export async function checkProject(
-  project: Project,
+  project: Project & { url: string },
   { fetchImpl = fetch, timeoutMs = DEFAULT_TIMEOUT_MS, now = () => new Date() }: CheckOptions = {},
 ): Promise<ProjectHealth> {
   const startedAt = performance.now();
@@ -87,7 +91,7 @@ async function mapWithConcurrency<T, R>(
 }
 
 export function checkProjects(
-  projectList: readonly Project[],
+  projectList: readonly (Project & { url: string })[],
   options: CheckOptions & { concurrency?: number } = {},
 ) {
   const { concurrency = DEFAULT_CONCURRENCY, ...checkOptions } = options;

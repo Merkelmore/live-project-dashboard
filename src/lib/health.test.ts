@@ -4,7 +4,7 @@ vi.mock("server-only", () => ({}));
 
 import { checkProject, checkProjects } from "./health";
 
-const project = { id: "test", name: "Test", url: "https://example.test" };
+const project = { id: "test", name: "Test", repository: "test", url: "https://example.test" };
 const fixedNow = () => new Date("2026-08-01T12:00:00.000Z");
 
 describe("checkProject", () => {
@@ -17,6 +17,11 @@ describe("checkProject", () => {
   it("marks HTTP failures as not live", async () => {
     await expect(checkProject(project, { fetchImpl: async () => new Response(null, { status: 503 }), now: fixedNow }))
       .resolves.toMatchObject({ status: "not_live", statusCode: 503 });
+  });
+
+  it("recognizes an authentication wall as a reachable protected service", async () => {
+    await expect(checkProject(project, { fetchImpl: async () => new Response(null, { status: 401 }), now: fixedNow }))
+      .resolves.toMatchObject({ status: "protected", statusCode: 401 });
   });
 
   it("reports transport failures as unknown without blocking other projects", async () => {
