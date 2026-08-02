@@ -25,4 +25,4 @@ This is an availability signal, not a deep application-health test.
 
 ## Production
 
-The project joins the existing `cultural-enrichment-radar_default` Docker network and is expected at `/srv/live-project-dashboard`. Before the first deployment, create a protected `.env.production` from `.env.example`, ensure DNS for `www.leonstrotz.com` points to the shared host, and add [Caddyfile.leonstrotz.com](Caddyfile.leonstrotz.com) to the central shared Caddy configuration. The deployment workflow requires the existing repository secrets documented in `AGENTS.md`.
+The project joins the existing `cultural-enrichment-radar_default` Docker network and deploys to `/srv/live-project-dashboard`. The production workflow bootstraps the checkout, creates the protected environment file, and adds [Caddyfile.leonstrotz.com](Caddyfile.leonstrotz.com) to the shared Caddy configuration on its first successful run. It requires the existing `DEPLOY_USER` and `DEPLOY_PASSWORD` repository secrets documented in `AGENTS.md`.

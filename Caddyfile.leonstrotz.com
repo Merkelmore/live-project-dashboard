@@ -1,5 +1,7 @@
-# Add this site block to the shared Caddyfile in the cultural-enrichment-radar
-# production checkout once the /srv/live-project-dashboard checkout exists.
+leonstrotz.com {
+  redir https://www.leonstrotz.com{uri} permanent
+}
+
 www.leonstrotz.com {
   encode zstd gzip
 
