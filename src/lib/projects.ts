@@ -27,7 +27,7 @@ export const projects: readonly Project[] = [
   },
   {
     id: "sharemeter",
-    name: "Sharemeter",
+    name: "Application Agent",
     url: "https://sharemeter.info",
   },
 ];

@@ -13,7 +13,7 @@ Open `http://localhost:3000`. The dashboard makes its health requests through `/
 
 ## Adding a project
 
-Edit `src/lib/projects.ts`. The display name and public URL are deliberately separate, and the URL list is static to prevent server-side request forgery. `healthUrl` is available for an explicit public health endpoint when it differs from the page URL.
+Edit `src/lib/projects.ts`. The display name and public URL are deliberately separate (for example, Application Agent is published at `sharemeter.info`), and the URL list is static to prevent server-side request forgery. `healthUrl` is available for an explicit public health endpoint when it differs from the page URL.
 
 Status meanings:
 
