@@ -26,6 +26,11 @@ export const projects: readonly Project[] = [
     url: "https://supercomputer.blog",
   },
   {
+    id: "politik-kompass-schweiz",
+    name: "Politik-Kompass Schweiz",
+    url: "https://politik-kompass-schweiz.info",
+  },
+  {
     id: "sharemeter",
     name: "Application Agent",
     url: "https://sharemeter.info",
