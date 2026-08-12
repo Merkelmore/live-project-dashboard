@@ -24,6 +24,15 @@ describe("checkProject", () => {
       .resolves.toMatchObject({ status: "protected", statusCode: 401 });
   });
 
+  it("cancels response bodies that are not needed for health checks", async () => {
+    const cancel = vi.fn();
+    const response = new Response(new ReadableStream({ cancel }), { status: 200 });
+
+    await expect(checkProject(project, { fetchImpl: async () => response, now: fixedNow }))
+      .resolves.toMatchObject({ status: "live", statusCode: 200 });
+    expect(cancel).toHaveBeenCalledOnce();
+  });
+
   it("reports transport failures as unknown without blocking other projects", async () => {
     const results = await checkProjects([project, { ...project, id: "other", url: "https://other.test" }], {
       fetchImpl: async (url) => {
