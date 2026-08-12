@@ -1,18 +1,27 @@
+name: live-project-dashboard
+
 services:
   app:
-    image: live-project-dashboard:latest
+    image: live-project-dashboard:${IMAGE_TAG:-local}
     build:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - ${ENV_FILE:-.env.production}
+      - ${ENV_FILE:-/etc/production-secrets/project-dashboard.env}
     expose:
       - "3000"
     networks:
-      shared_proxy:
+      gateway:
         aliases:
-          - live-project-dashboard
+          - project-dashboard
     restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     healthcheck:
       test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/api/status').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))\""]
       interval: 30s
@@ -21,6 +30,6 @@ services:
       start_period: 30s
 
 networks:
-  shared_proxy:
+  gateway:
     external: true
-    name: cultural-enrichment-radar_default
+    name: production_gateway
