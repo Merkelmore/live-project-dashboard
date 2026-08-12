@@ -16,7 +16,9 @@ start with public-only metadata when that token is absent.
 
 ## Health check
 
-`/api/status` and the public homepage must return HTTP 200. Repository
+`/api/health` is the lightweight container and availability check. It must
+return HTTP 200 without contacting GitHub or the other projects. `/api/status`
+and the public homepage must also work during release verification. Repository
 failures should be shown as unavailable data rather than crash the site.
 
 ## Backup
