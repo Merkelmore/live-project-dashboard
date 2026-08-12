@@ -12,7 +12,7 @@ export type Project = {
 };
 
 export const projects: readonly Project[] = [
-  { id: "live-project-dashboard", name: "Live Project Dashboard", repository: "live-project-dashboard", url: "https://www.leonstrotz.com", healthUrl: "http://127.0.0.1:3000" },
+  { id: "live-project-dashboard", name: "Live Project Dashboard", repository: "live-project-dashboard", url: "https://www.leonstrotz.com", healthUrl: "http://127.0.0.1:3000/api/health" },
   { id: "cultural-enrichment-radar", name: "Cultural Enrichment Radar", repository: "demografie-schweiz", url: "https://enrichment-radar-schweiz.info" },
   { id: "gg-orchestrator", name: "GG Orchestrator", repository: "garden-gnome-orchestrator", url: "https://strotzenheim.com" },
   { id: "binance-trade-console", name: "Binance Trade Console", repository: "binance-trade-console", url: "https://supercomputer.blog" },

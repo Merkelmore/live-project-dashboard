@@ -49,11 +49,20 @@ export async function checkProject(
       redirect: "follow",
       signal: AbortSignal.timeout(timeoutMs),
     });
+    const statusCode = response.status;
+
+    // Health checks never use response content. Cancelling it prevents large
+    // pages or streaming endpoints from retaining buffers and connections.
+    try {
+      await response.body?.cancel();
+    } catch {
+      // The HTTP status remains useful even if the body already closed.
+    }
 
     return {
       id: project.id,
-      status: statusForHttpCode(response.status),
-      statusCode: response.status,
+      status: statusForHttpCode(statusCode),
+      statusCode,
       latencyMs: Math.round(performance.now() - startedAt),
       checkedAt,
     };
