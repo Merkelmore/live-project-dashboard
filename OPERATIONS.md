@@ -21,6 +21,10 @@ return HTTP 200 without contacting GitHub or the other projects. `/api/status`
 and the public homepage must also work during release verification. Repository
 failures should be shown as unavailable data rather than crash the site.
 
+The production runtime is capped at 512 MB of container memory and 384 MB of
+Node heap. Its self-check must always target `/api/health`; pointing it at the
+server-rendered homepage creates a recursive request chain.
+
 ## Backup
 
 The application has no irreplaceable local database. Back up the reviewed Git
