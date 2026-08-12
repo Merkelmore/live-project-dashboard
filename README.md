@@ -1,6 +1,6 @@
 # Live Project Dashboard
 
-The dashboard behind [www.leonstrotz.com](https://www.leonstrotz.com) lists Leon Strotz’s public projects and checks whether each public URL can be reached.
+The dashboard behind [www.leonstrotz.com](https://www.leonstrotz.com) lists Leon Strotzâ€™s public projects and checks whether each public URL can be reached.
 
 ## Local development
 
@@ -21,8 +21,10 @@ Status meanings:
 - **Nicht erreichbar**: the target returned HTTP 4xx or 5xx.
 - **Unbekannt**: no definitive HTTP answer was received before the timeout (for example DNS, TLS, or network trouble).
 
-HTTP 401/403 means the service is reachable but protected, so it appears as **Live · geschützt**. This is an availability signal, not a deep application-health test. Projects without a confirmed public URL appear separately at [/not-live](/not-live).
+HTTP 401/403 means the service is reachable but protected, so it appears as **Live Â· geschÃ¼tzt**. This is an availability signal, not a deep application-health test. Projects without a confirmed public URL appear separately at [/not-live](/not-live).
 
-## Production
+## Production operations
 
-The project joins the existing `cultural-enrichment-radar_default` Docker network and deploys to `/srv/live-project-dashboard`. The production workflow bootstraps the checkout, creates the protected environment file, and adds [Caddyfile.leonstrotz.com](Caddyfile.leonstrotz.com) to the shared Caddy configuration on its first successful run. It requires the existing `DEPLOY_USER` and `DEPLOY_PASSWORD` repository secrets documented in `AGENTS.md`. Add an optional `GITHUB_READ_TOKEN` Actions secret (read-only GitHub access) to include private repositories in live inventory refreshes.
+Production is managed explicitly from the private `Merkelmore/production-operations` repository. Merging code does not deploy. The application runs unprivileged behind the central HTTPS gateway and exposes no host port.
+
+A production release requires repository checks, container health, and public dashboard verification. Optional GitHub read access must use a newly issued least-privilege credential stored outside Git.
